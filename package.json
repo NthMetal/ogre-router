@@ -7,8 +7,12 @@
   "license": "MIT",
   "keywords": [
     "typescript",
-    "boilerplate",
+    "tor",
+    "routing",
     "esbuild"
+  ],
+  "files": [
+    "dist/"
   ],
   "main": "./dist/tsc/main.js",
   "types": "./dist/tsc/main.d.ts",

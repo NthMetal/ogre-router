@@ -34,7 +34,9 @@ export class Signaler {
         let parsedMessage;
         try {
             parsedMessage = JSON.parse(message.data);
-        } catch (error) {}
+        } catch (error) {
+            console.log('Error parsing socket message');
+        }
         if (!parsedMessage || !parsedMessage.event) return;
         const handler = this['socket_' + parsedMessage.event as keyof this] as any;
         if (handler) {

@@ -1,15 +1,13 @@
-import { Observable } from 'rxjs';
+import { Ogre } from './models/ogre';
+import { Predecessor } from './models/predecessor';
+import { Signaler } from './models/signaler';
+import { Successor } from './models/successor';
+import { User } from './models/user';
 
-
-export const delayMillis = (delayMs: number): Promise<void> => new Promise(resolve => setTimeout(resolve, delayMs));
-
-export const greet = (name: string): string => `Hello ${name}`
-
-export const foo = async (): Promise<boolean> => {
-  console.log(greet('World'))
-  await delayMillis(1000)
-  console.log('done')
-  const t = new Observable();
-  console.log(t);
-  return true
+export {
+  Ogre,
+  Predecessor,
+  Signaler,
+  Successor,
+  User
 }

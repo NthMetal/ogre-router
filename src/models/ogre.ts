@@ -11,7 +11,7 @@ export class Ogre {
     predecessor: Predecessor | undefined;
     user;
 
-    targetUserId: string = '';
+    targetUserId = '';
 
     messages = new Subject();
 
