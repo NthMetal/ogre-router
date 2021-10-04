@@ -1,9 +1,87 @@
 <html>
-  <head>
-    <script src="./dist/esbuild/browser.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/typescript-boilerplate-2021"></script> -->
-  </head>
-  <body>
-    Open the devtools 👇
-  </body>
+
+<head>
+  <script>
+    // pollyfills
+    (window).global = window;
+    (window).process = window;
+    (window).process.nextTick = () => {
+        return null;
+    }
+  </script>
+  <script src="./dist/esbuild/browser.js"></script>
+</head>
+
+<body>
+  <div>
+    <div><b>User Info:</b></div>
+    <div id="userInfo">Waiting...</div>
+  </div>
+  <div>
+    <div><b>Send A Message:</b></div>
+    <div>
+      <textarea id="sendMessageInput"></textarea>
+    </div>
+    <div>
+      <button id="sendMessageButton" type="button">Send</button>
+    </div>
+  </div>
+  <div>
+    <div><b>Recieved Messages:</b></div>
+    <div id="messagesInfo" style="white-space: pre;"></div>
+  </div>
+  <div>
+    <div><b>Peer List:</b></div>
+    <div id="peerList" style="white-space: pre;"></div>
+  </div>
+
+  <script>
+    const ogre = new Ogre();
+
+    const documentElements = {
+      sendMessageInput: document.querySelector('#sendMessageInput'),
+      sendMessageButton: document.querySelector('#sendMessageButton'),
+      messagesInfo: document.querySelector('#messagesInfo'),
+      peerList: document.querySelector('#peerList'),
+      userInfo: document.querySelector('#userInfo'),
+    }
+
+    const documentActions = {
+      addNewMessage: (newMessage) => {
+        const oldTextContext = documentElements.messagesInfo.textContent;
+        documentElements.messagesInfo.textContent = oldTextContext + newMessage + '\n';
+      },
+      updatePeerList: (updatedList) => {
+        const buttonHTML = (buttonId) => `<button id="${buttonId}">${buttonId}</button>`
+        console.log('updating peer list with ', updatedList);
+        documentElements.peerList.innerHTML = updatedList.map(peer => buttonHTML(peer)).join('\n');
+        updatedList.forEach(button => {
+          document.querySelector(`#${button}`).addEventListener('click', event => {
+            ogre.selectTargetPeer(button);
+          });
+        });
+      },
+      updateUser: (userId) => {
+        documentElements.userInfo.textContent = `Connected as: ${userId}`
+      }
+    }
+
+    documentElements.sendMessageButton.addEventListener('click', event => {
+      console.log('sending...', documentElements.sendMessageInput.value)
+      const message = `${new Date()}: ${documentElements.sendMessageInput.value}`;
+      ogre.sendMessage(message);
+    });
+
+    documentActions.updateUser(ogre.user.id);
+
+    ogre.messages.subscribe(message => {
+      documentActions.addNewMessage(message);
+    });
+
+    ogre.observePeerList().subscribe(list => {
+      documentActions.updatePeerList(list);
+    });
+  </script>
+</body>
+
 </html>
