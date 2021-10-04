@@ -13,7 +13,8 @@
     "esbuild"
   ],
   "files": [
-    "dist/"
+    "dist/",
+    "dist-cli/"
   ],
   "main": "./dist/tsc/main.js",
   "types": "./dist/tsc/main.d.ts",
@@ -29,14 +30,14 @@
     "ts-node": "ts-node",
     "docs": "typedoc --entryPoints src/main.ts --includes src/models",
     "build": "tsc -p tsconfig.json",
-    "build-all:publish": "npm run build-all && npm publish",
+    "build-all:publish": "npm version prerelease --preid=next && npm run build-all && npm publish",
     "build-all": "npm run clean && npm run build && npm run esbuild-node && npm run esbuild-browser",
-    "esbuild-browser": "esbuild src/browser.ts --bundle --minify --sourcemap=external --outfile=dist/esbuild/browser.js",
-    "esbuild-browser:dev": "esbuild src/browser.ts --bundle --outfile=dist/esbuild/browser.js",
-    "esbuild-browser:watch": "esbuild src/browser.ts --bundle --watch --outfile=dist/esbuild/browser.js",
-    "esbuild-node": "esbuild src/cli.ts --bundle --platform=node --minify --sourcemap=external --outfile=dist/esbuild/cli.js",
-    "esbuild-node:dev": "esbuild src/cli.ts --bundle --sourcemap=external --outfile=dist/esbuild/cli.js",
-    "esbuild-node:watch": "esbuild src/cli.ts --bundle --watch --sourcemap=external --outfile=dist/esbuild/cli.js"
+    "esbuild-browser": "esbuild src/browser.ts --bundle --minify --sourcemap=external --outfile=dist-browser/browser.js",
+    "esbuild-browser:dev": "esbuild src/browser.ts --bundle --outfile=dist-browser/browser.js",
+    "esbuild-browser:watch": "esbuild src/browser.ts --bundle --watch --outfile=dist-browser/browser.js",
+    "esbuild-node": "esbuild src/cli.ts --bundle --platform=node --minify --sourcemap=external --outfile=dist-cli/cli.js",
+    "esbuild-node:dev": "esbuild src/cli.ts --bundle --sourcemap=external --outfile=dist-cli/cli.js",
+    "esbuild-node:watch": "esbuild src/cli.ts --bundle --watch --sourcemap=external --outfile=dist-cli/cli.js"
   },
   "devDependencies": {
     "@types/history": "^4.7.9",
