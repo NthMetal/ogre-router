@@ -18,9 +18,8 @@
   ],
   "main": "./dist/tsc/main.js",
   "types": "./dist/tsc/main.d.ts",
-  "browser": "./dist/esbuild/browser.js",
   "bin": {
-    "ogrejs": "./dist/esbuild/cli.js"
+    "ogrejs": "./dist-cli/cli.js"
   },
   "scripts": {
     "cli": "ts-node src/cli.ts",
