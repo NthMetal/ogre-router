@@ -30,6 +30,7 @@
     "docs": "typedoc --entryPoints src/main.ts --includes src/models",
     "build": "tsc -p tsconfig.json",
     "build-all:publish": "npm version prerelease --preid=next && npm run build-all && npm publish",
+    "build-all:test": "npm run build-all && rm -rf ../browser-tor-ng/node_modules/ogre-router/dist/* && cp -rf ./dist/* ../browser-tor-ng/node_modules/ogre-router/dist",
     "build-all": "npm run clean && npm run build && npm run esbuild-node && npm run esbuild-browser",
     "esbuild-browser": "esbuild src/browser.ts --bundle --minify --sourcemap=external --outfile=dist-browser/browser.js",
     "esbuild-browser:dev": "esbuild src/browser.ts --bundle --outfile=dist-browser/browser.js",
