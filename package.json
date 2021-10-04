@@ -4,6 +4,7 @@
   "description": "Ogre.js",
   "author": "NthMetal <832529@gmail.com>",
   "repository": "https://github.com/NthMetal/ogre-router",
+  "homepage": "https://nthmetal.github.io/ogre-router/",
   "license": "MIT",
   "keywords": [
     "typescript",
