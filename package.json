@@ -44,6 +44,7 @@
     "@types/jest": "^26.0.21",
     "@types/node": "^15.0.1",
     "@types/simple-peer": "^9.11.3",
+    "@types/uuid": "^8.3.1",
     "@typescript-eslint/eslint-plugin": "^4.19.0",
     "@typescript-eslint/parser": "^4.19.0",
     "esbuild": "^0.11.11",
@@ -57,6 +58,7 @@
   "dependencies": {
     "events": "^3.3.0",
     "rxjs": "^7.3.1",
-    "simple-peer": "^9.11.0"
+    "simple-peer": "^9.11.0",
+    "uuid": "^8.3.2"
   }
 }

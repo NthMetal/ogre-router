@@ -10,6 +10,7 @@ export interface IBaseMessage {
     bare: true;
     message: string;
     source: string;
+    sourceAlias: string;
     target: string;
     date: Date;
 }
@@ -26,7 +27,7 @@ export class Ogre {
     predecessor: Predecessor | undefined;
     user!: User;
 
-    targetUserId = '';
+    targetUser: { id: string, alias: string } | undefined = undefined;
 
     messages = new Subject<IBaseMessage>();
     storageService: StorageService;
@@ -74,25 +75,26 @@ export class Ogre {
         return this.signaler.peerlist;
     }
 
-    createCircuit(targetUserId: string, maxORs = 1) {
+    createCircuit(targetUser: { id: string, alias: string } | undefined, maxORs = 1): string[] {
         const peerlist = this.getPeerList();
-        const circuit = [];
+        const circuit: string[] = [];
+        if (!targetUser) return circuit;
 
         peerlist.forEach(peer => {
             if (
-                peer !== this.user.id &&
-                peer !== targetUserId &&
+                peer.id !== this.user.id &&
+                peer.id !== targetUser.id &&
                 circuit.length < maxORs
             ) {
-                circuit.unshift(peer);
+                circuit.unshift(peer.id);
             }
         });
-        circuit.push(targetUserId);
+        circuit.push(targetUser.id);
         return circuit;
     }
 
-    selectTargetPeer(id: string) {
-        this.targetUserId = id;
+    selectTargetPeer(user: { id: string, alias: string }) {
+        this.targetUser = user;
     }
 
     layerMessage(circuit: string[], message: string) {
@@ -108,13 +110,14 @@ export class Ogre {
     }
 
     async sendMessage(message: string) {
-        console.log(`target ${this.targetUserId} sending ${message}`);
-        const circuit = this.createCircuit(this.targetUserId, 2);
+        console.log(`target ${this.targetUser} sending ${message}`);
+        const circuit = this.createCircuit(this.targetUser, 2);
         const baseMessage: IBaseMessage = {
             bare: true,
             message,
             source: this.user.id,
-            target: this.targetUserId,
+            sourceAlias: this.user.alias,
+            target: this.targetUser?.id || '',
             date: new Date()
         };
         const layeredMessage = this.layerMessage(circuit, JSON.stringify(baseMessage));

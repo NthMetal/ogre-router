@@ -5,7 +5,7 @@ export class Signaler {
 
     socket;
     user;
-    peerlist = new BehaviorSubject<string[]>([]);
+    peerlist = new BehaviorSubject<{id: string, alias: string}[]>([]);
 
     getOfferSubject = new Subject<{ source: string, offer: any}>();
     getAnswerSubject = new Subject<{ source: string, answer: any}>();
@@ -18,16 +18,21 @@ export class Signaler {
     }
 
     socketOpened() {
-        /** Look for existing identification */
-        /** If identification doesn't exist, ask for it */
-        /** Otherwise send the identification */
         const payload = JSON.stringify({
             event: 'userConnection',
             data: {
                 id: this.user.id,
+                alias: this.user.alias,
+                signature: this.user.signature
             }
         });
         this.socket.send(payload);
+    }
+
+    socket_userAcknowledged(data: { id: string, signature: string }) {
+        if (data && data.signature) {
+            this.user.setSignature(data.signature);
+        }
     }
 
     socketMessage(message: { data: string; }) {
@@ -92,7 +97,7 @@ export class Signaler {
         this.getAnswerSubject.next(data);
     }
 
-    socket_peerlist(data: string[]) {
-        this.peerlist.next(data.filter(userId => this.user.id !== userId));
+    socket_peerlist(data: {id: string, alias: string}[]) {
+        this.peerlist.next(data.filter(user => this.user.id !== user.id));
     }
 }
