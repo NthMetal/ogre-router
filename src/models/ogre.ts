@@ -105,7 +105,7 @@ export class Ogre {
         successor.peer.signal(answerData.answer)
         await successor.onConnection();
         successor.peer.send(nextMessage);
-        // setTimeout(() => {successor.destroy();}, 100);
+        setTimeout(() => {successor.destroy();}, 100);
     }
 
 }
