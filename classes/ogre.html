@@ -86,11 +86,13 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="ogre.html#gotusersubject" class="tsd-kind-icon">got<wbr>User<wbr>Subject</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="ogre.html#messages" class="tsd-kind-icon">messages</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="ogre.html#predecessor" class="tsd-kind-icon">predecessor</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="ogre.html#signaler" class="tsd-kind-icon">signaler</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="ogre.html#storageservice" class="tsd-kind-icon">storage<wbr>Service</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="ogre.html#successor" class="tsd-kind-icon">successor</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="ogre.html#targetuserid" class="tsd-kind-icon">target<wbr>User<wbr>Id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="ogre.html#targetuser" class="tsd-kind-icon">target<wbr>User</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="ogre.html#user" class="tsd-kind-icon">user</a></li>
 							</ul>
 						</section>
@@ -99,6 +101,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ogre.html#createcircuit" class="tsd-kind-icon">create<wbr>Circuit</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ogre.html#getpeerlist" class="tsd-kind-icon">get<wbr>Peer<wbr>List</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ogre.html#gotuser" class="tsd-kind-icon">got<wbr>User</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ogre.html#layermessage" class="tsd-kind-icon">layer<wbr>Message</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ogre.html#observepeerlist" class="tsd-kind-icon">observe<wbr>Peer<wbr>List</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ogre.html#selecttargetpeer" class="tsd-kind-icon">select<wbr>Target<wbr>Peer</a></li>
@@ -115,15 +118,21 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Ogre<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="ogre.html" class="tsd-signature-type" data-tsd-kind="Class">Ogre</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Ogre<span class="tsd-signature-symbol">(</span>ogreConfig<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IOgreConfig</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="ogre.html" class="tsd-signature-type" data-tsd-kind="Class">Ogre</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/9ae949c/src/models/ogre.ts#L16">models/ogre.ts:16</a></li>
+									<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/5e3bf13/src/models/ogre.ts#L35">models/ogre.ts:35</a></li>
 								</ul>
 							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> ogreConfig: <span class="tsd-signature-type">IOgreConfig</span></h5>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="ogre.html" class="tsd-signature-type" data-tsd-kind="Class">Ogre</a></h4>
 						</li>
 					</ul>
@@ -131,13 +140,23 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="gotusersubject" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> got<wbr>User<wbr>Subject</h3>
+					<div class="tsd-signature tsd-kind-icon">got<wbr>User<wbr>Subject<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Subject</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/5e3bf13/src/models/ogre.ts#L35">models/ogre.ts:35</a></li>
+						</ul>
+					</aside>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="messages" class="tsd-anchor"></a>
 					<h3>messages</h3>
-					<div class="tsd-signature tsd-kind-icon">messages<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Subject</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
+					<div class="tsd-signature tsd-kind-icon">messages<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Subject</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IBaseMessage</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/9ae949c/src/models/ogre.ts#L16">models/ogre.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/5e3bf13/src/models/ogre.ts#L32">models/ogre.ts:32</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -147,7 +166,7 @@
 					<div class="tsd-signature tsd-kind-icon">predecessor<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="predecessor.html" class="tsd-signature-type" data-tsd-kind="Class">Predecessor</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/9ae949c/src/models/ogre.ts#L11">models/ogre.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/5e3bf13/src/models/ogre.ts#L27">models/ogre.ts:27</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -157,7 +176,17 @@
 					<div class="tsd-signature tsd-kind-icon">signaler<span class="tsd-signature-symbol">:</span> <a href="signaler.html" class="tsd-signature-type" data-tsd-kind="Class">Signaler</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/9ae949c/src/models/ogre.ts#L9">models/ogre.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/5e3bf13/src/models/ogre.ts#L25">models/ogre.ts:25</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="storageservice" class="tsd-anchor"></a>
+					<h3>storage<wbr>Service</h3>
+					<div class="tsd-signature tsd-kind-icon">storage<wbr>Service<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">StorageService</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/5e3bf13/src/models/ogre.ts#L33">models/ogre.ts:33</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -167,17 +196,17 @@
 					<div class="tsd-signature tsd-kind-icon">successor<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="successor.html" class="tsd-signature-type" data-tsd-kind="Class">Successor</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/9ae949c/src/models/ogre.ts#L10">models/ogre.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/5e3bf13/src/models/ogre.ts#L26">models/ogre.ts:26</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="targetuserid" class="tsd-anchor"></a>
-					<h3>target<wbr>User<wbr>Id</h3>
-					<div class="tsd-signature tsd-kind-icon">target<wbr>User<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &#x27;&#x27;</span></div>
+					<a name="targetuser" class="tsd-anchor"></a>
+					<h3>target<wbr>User</h3>
+					<div class="tsd-signature tsd-kind-icon">target<wbr>User<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>alias<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/9ae949c/src/models/ogre.ts#L14">models/ogre.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/5e3bf13/src/models/ogre.ts#L30">models/ogre.ts:30</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -187,7 +216,7 @@
 					<div class="tsd-signature tsd-kind-icon">user<span class="tsd-signature-symbol">:</span> <a href="user.html" class="tsd-signature-type" data-tsd-kind="Class">User</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/9ae949c/src/models/ogre.ts#L12">models/ogre.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/5e3bf13/src/models/ogre.ts#L28">models/ogre.ts:28</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -198,19 +227,19 @@
 					<a name="createcircuit" class="tsd-anchor"></a>
 					<h3>create<wbr>Circuit</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Circuit<span class="tsd-signature-symbol">(</span>targetUserId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, maxORs<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Circuit<span class="tsd-signature-symbol">(</span>targetUser<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>alias<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span>, maxORs<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/9ae949c/src/models/ogre.ts#L45">models/ogre.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/5e3bf13/src/models/ogre.ts#L78">models/ogre.ts:78</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>targetUserId: <span class="tsd-signature-type">string</span></h5>
+									<h5>targetUser: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>alias<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
 								</li>
 								<li>
 									<h5>maxORs: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 1</span></h5>
@@ -224,16 +253,33 @@
 					<a name="getpeerlist" class="tsd-anchor"></a>
 					<h3>get<wbr>Peer<wbr>List</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Peer<wbr>List<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Peer<wbr>List<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>alias<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/9ae949c/src/models/ogre.ts#L37">models/ogre.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/5e3bf13/src/models/ogre.ts#L70">models/ogre.ts:70</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{ </span>alias<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="gotuser" class="tsd-anchor"></a>
+					<h3>got<wbr>User</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">got<wbr>User<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/5e3bf13/src/models/ogre.ts#L62">models/ogre.ts:62</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -247,7 +293,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/9ae949c/src/models/ogre.ts#L66">models/ogre.ts:66</a></li>
+									<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/5e3bf13/src/models/ogre.ts#L100">models/ogre.ts:100</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -267,16 +313,16 @@
 					<a name="observepeerlist" class="tsd-anchor"></a>
 					<h3>observe<wbr>Peer<wbr>List</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">observe<wbr>Peer<wbr>List<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BehaviorSubject</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">observe<wbr>Peer<wbr>List<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BehaviorSubject</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>alias<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/9ae949c/src/models/ogre.ts#L41">models/ogre.ts:41</a></li>
+									<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/5e3bf13/src/models/ogre.ts#L74">models/ogre.ts:74</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">BehaviorSubject</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">BehaviorSubject</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>alias<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -284,19 +330,27 @@
 					<a name="selecttargetpeer" class="tsd-anchor"></a>
 					<h3>select<wbr>Target<wbr>Peer</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">select<wbr>Target<wbr>Peer<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">select<wbr>Target<wbr>Peer<span class="tsd-signature-symbol">(</span>user<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>alias<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/9ae949c/src/models/ogre.ts#L62">models/ogre.ts:62</a></li>
+									<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/5e3bf13/src/models/ogre.ts#L96">models/ogre.ts:96</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>id: <span class="tsd-signature-type">string</span></h5>
+									<h5>user: <span class="tsd-signature-symbol">{ </span>alias<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter">
+											<h5>alias<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+										</li>
+									</ul>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -313,7 +367,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/9ae949c/src/models/ogre.ts#L78">models/ogre.ts:78</a></li>
+									<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/5e3bf13/src/models/ogre.ts#L112">models/ogre.ts:112</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -336,7 +390,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/9ae949c/src/models/ogre.ts#L86">models/ogre.ts:86</a></li>
+									<li>Defined in <a href="https://github.com/NthMetal/ogre-router/blob/5e3bf13/src/models/ogre.ts#L127">models/ogre.ts:127</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -369,6 +423,9 @@
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
 								<a href="ogre.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="ogre.html#gotusersubject" class="tsd-kind-icon">got<wbr>User<wbr>Subject</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="ogre.html#messages" class="tsd-kind-icon">messages</a>
 							</li>
@@ -379,10 +436,13 @@
 								<a href="ogre.html#signaler" class="tsd-kind-icon">signaler</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="ogre.html#storageservice" class="tsd-kind-icon">storage<wbr>Service</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="ogre.html#successor" class="tsd-kind-icon">successor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="ogre.html#targetuserid" class="tsd-kind-icon">target<wbr>User<wbr>Id</a>
+								<a href="ogre.html#targetuser" class="tsd-kind-icon">target<wbr>User</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="ogre.html#user" class="tsd-kind-icon">user</a>
@@ -392,6 +452,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="ogre.html#getpeerlist" class="tsd-kind-icon">get<wbr>Peer<wbr>List</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="ogre.html#gotuser" class="tsd-kind-icon">got<wbr>User</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="ogre.html#layermessage" class="tsd-kind-icon">layer<wbr>Message</a>
@@ -437,6 +500,10 @@
 				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
 			</ul>
 		</div>
 	</div>
