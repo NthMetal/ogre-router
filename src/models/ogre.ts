@@ -1,36 +1,68 @@
 import { Subject } from "rxjs";
+import { LocalstorageService } from "../storage/localStorage.storage";
+import { StorageService } from "../storage/storage.service";
 import { Predecessor } from "./predecessor";
 import { Signaler } from "./signaler";
 import { Successor } from "./successor";
 import { User } from "./user";
 
+export interface IBaseMessage {
+    bare: true;
+    message: string;
+    source: string;
+    target: string;
+    date: Date;
+}
+
+export interface IOgreConfig {
+    signalingAddress: string;
+    storageService: StorageService;
+}
+
 export class Ogre {
 
-    signaler: Signaler;
+    signaler!: Signaler;
     successor: Successor | undefined;
     predecessor: Predecessor | undefined;
-    user;
+    user!: User;
 
     targetUserId = '';
 
-    messages = new Subject();
+    messages = new Subject<IBaseMessage>();
+    storageService: StorageService;
 
-    constructor() {
-        this.user = new User();
-        this.signaler = new Signaler(this.user);
-        this.signaler.getOfferSubject.subscribe(async data => {
-            const predecessor = new Predecessor();
-            console.log('socket get offer: ', data);
-            predecessor.peer.signal(data.offer);
-            const answer = await predecessor.getAnswer();
-            this.signaler.sendAnswer(data.source, answer);
-            predecessor.data.subscribe(message => {
-                console.log('got message: ', message);
-                this.transferMessage(message);
-                // setTimeout(() => {predecessor.destroy();});
+    private gotUserSubject = new Subject<boolean>();
+
+    constructor(ogreConfig?: IOgreConfig) {
+        this.storageService = ogreConfig && ogreConfig.storageService ?
+            ogreConfig.storageService :
+            new LocalstorageService();
+        this.storageService.getUser().then(user => {
+            this.gotUserSubject.next(true);
+            this.user = user;
+            this.signaler = new Signaler(this.user, ogreConfig?.signalingAddress);
+            this.signaler.getOfferSubject.subscribe(async data => {
+                const predecessor = new Predecessor();
+                console.log('socket get offer: ', data);
+                predecessor.peer.signal(data.offer);
+                const answer = await predecessor.getAnswer();
+                this.signaler.sendAnswer(data.source, answer);
+                predecessor.data.subscribe(message => {
+                    console.log('got message: ', message);
+                    this.transferMessage(message);
+                    // setTimeout(() => {predecessor.destroy();});
+                });
+                await predecessor.onConnection();
+                console.log('predecessor connected: ', data);
             });
-            await predecessor.onConnection();
-            console.log('predecessor connected: ', data);
+        });
+    }
+
+    gotUser() {
+        return new Promise<void>(resolve => {
+            this.gotUserSubject.subscribe(() => {
+                resolve();
+            })
         });
     }
 
@@ -78,8 +110,14 @@ export class Ogre {
     async sendMessage(message: string) {
         console.log(`target ${this.targetUserId} sending ${message}`);
         const circuit = this.createCircuit(this.targetUserId, 2);
-        console.log(circuit);
-        const layeredMessage = this.layerMessage(circuit, message);
+        const baseMessage: IBaseMessage = {
+            bare: true,
+            message,
+            source: this.user.id,
+            target: this.targetUserId,
+            date: new Date()
+        };
+        const layeredMessage = this.layerMessage(circuit, JSON.stringify(baseMessage));
         await this.transferMessage(layeredMessage);
     }
 
@@ -87,9 +125,12 @@ export class Ogre {
         let parsedLayeredMessage;
         try {
             parsedLayeredMessage = JSON.parse(layeredMessage);
-        } catch(error) {
+        } catch (error) {
             console.log('error parsing assuming this is final message: ', layeredMessage);
-            this.messages.next(layeredMessage.toString());
+            return;
+        }
+        if (parsedLayeredMessage && parsedLayeredMessage.bare) {
+            this.messages.next(parsedLayeredMessage);
             return;
         }
         console.log(layeredMessage, parsedLayeredMessage);
@@ -105,7 +146,8 @@ export class Ogre {
         successor.peer.signal(answerData.answer)
         await successor.onConnection();
         successor.peer.send(nextMessage);
-        setTimeout(() => {successor.destroy();}, 100);
+        // TODO NTH: fix destroying only after message is successfully sent
+        setTimeout(() => { successor.destroy(); }, 100);
     }
 
 }

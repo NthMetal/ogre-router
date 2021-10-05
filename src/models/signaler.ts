@@ -10,8 +10,8 @@ export class Signaler {
     getOfferSubject = new Subject<{ source: string, offer: any}>();
     getAnswerSubject = new Subject<{ source: string, answer: any}>();
 
-    constructor(user: User) {
-        this.socket = new WebSocket('ws://localhost:8080');
+    constructor(user: User, signalingAddress?: string) {
+        this.socket = new WebSocket( signalingAddress || 'ws://localhost:8080');
         this.user = user;
         this.socket.addEventListener('open', this.socketOpened.bind(this));
         this.socket.addEventListener('message', this.socketMessage.bind(this));
