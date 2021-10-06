@@ -10,7 +10,5 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    allow:
-       - "production"
     reviewers:
        - "NthMetal"
