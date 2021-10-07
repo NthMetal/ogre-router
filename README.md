@@ -2,6 +2,10 @@
 
 **CURRENTLY IN DEVELOPMENT**
 
+[![Lint and test](https://github.com/NthMetal/ogre-router/actions/workflows/lint-and-test.yml/badge.svg)](https://github.com/NthMetal/ogre-router/actions/workflows/lint-and-test.yml)
+
+[![Deploy to Github pages](https://github.com/NthMetal/ogre-router/actions/workflows/deploy-gh-pages.yml/badge.svg)](https://github.com/NthMetal/ogre-router/actions/workflows/deploy-gh-pages.yml)
+
 This project hopes to create anonymous routing of data through the standard (chromium) browser.
 
 It was inspired by Discord, Tor, [node-Tor](https://github.com/Ayms/node-Tor) among others. The routing mechanism is inspired by Tor's onion routing, but is not exactly the same (which is why the name was changed to ogre, though they both have layers).
