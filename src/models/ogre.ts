@@ -1,4 +1,4 @@
-import { Subject } from "rxjs";
+import { BehaviorSubject, Subject } from "rxjs";
 import { LocalstorageService } from "../storage/localStorage.storage";
 import { StorageService } from "../storage/storage.service";
 import { Predecessor } from "./predecessor";
@@ -32,16 +32,16 @@ export class Ogre {
     messages = new Subject<IBaseMessage>();
     storageService: StorageService;
 
-    private gotUserSubject = new Subject<boolean>();
+    private gotUserSubject = new BehaviorSubject<User | undefined>(undefined);
 
     constructor(ogreConfig?: IOgreConfig) {
         this.storageService = ogreConfig && ogreConfig.storageService ?
             ogreConfig.storageService :
             new LocalstorageService();
         this.storageService.getUser().then(user => {
-            this.gotUserSubject.next(true);
             this.user = user;
             this.signaler = new Signaler(this.user, ogreConfig?.signalingAddress);
+            this.gotUserSubject.next(user);
             this.signaler.getOfferSubject.subscribe(async data => {
                 const predecessor = new Predecessor();
                 console.log('socket get offer: ', data);
@@ -59,12 +59,8 @@ export class Ogre {
         });
     }
 
-    gotUser() {
-        return new Promise<void>(resolve => {
-            this.gotUserSubject.subscribe(() => {
-                resolve();
-            })
-        });
+    onUserLoaded(): BehaviorSubject<User | undefined> {
+        return this.gotUserSubject;
     }
 
     getPeerList() {

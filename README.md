@@ -7,7 +7,7 @@ This project hopes to create anonymous routing of data through the standard (chr
 It was inspired by Discord, Tor, [node-Tor](https://github.com/Ayms/node-Tor) among others. The routing mechanism is inspired by Tor's onion routing, but is not exactly the same (which is why the name was changed to ogre, though they both have layers).
 
 
-## The Onion Router (TOR)
+## Onion Routing
 
 The onion router or TOR provides anonymous browsing to the web or onion sites.
 
@@ -17,7 +17,7 @@ You can read more about technical specifications on TOR online.
 
 ![img](https://miro.medium.com/max/624/0*sDsZtvU8BDbeJ06J)
 
-## How does this project implement something similar.
+## Ogre Routing
 
 This project currently aims to anonymously transfer data through the web in a similar way.
 
