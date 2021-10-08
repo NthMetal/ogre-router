@@ -37,10 +37,6 @@ export class Predecessor {
         this.peer.on('connect', () => {
             this.connection.next(true);
         });
-
-        // this.peer.on('data', data => {
-        //     console.log('predecessor message: ', data);
-        // });
     }
 
     getOffer() {
@@ -68,18 +64,3 @@ export class Predecessor {
     }
 
 }
-
-// successorPeer.on('error', err => console.log('error', err));
-
-// successorPeer.on('signal', data => {
-//     documentActions.updateWebRTCStatusInfo(`Got Signal: ${data.type}`);
-//     documentActions.updateOutgoingInfo(JSON.stringify(data));
-// });
-
-// successorPeer.on('connect', () => {
-//     documentActions.updateWebRTCStatusInfo('Connected!');
-// });
-
-// successorPeer.on('data', data => {
-//     documentActions.addNewMessage(data);
-// });

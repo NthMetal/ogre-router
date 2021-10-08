@@ -1,14 +1,25 @@
-import { BehaviorSubject, Subject } from "rxjs";
+import { BehaviorSubject, Observable, Subject } from "rxjs";
+import { IUserRef } from "./ogre";
 import { User } from "./user";
+
+interface IOfferRef { 
+    source: string;
+    offer: any;
+}
+
+interface IAnswerRef {
+    source: string;
+    answer: any;
+}
 
 export class Signaler {
 
-    socket;
-    user;
-    peerlist = new BehaviorSubject<{id: string, alias: string}[]>([]);
+    private socket;
+    private user;
+    private peerlist = new BehaviorSubject<IUserRef[]>([]);
 
-    getOfferSubject = new Subject<{ source: string, offer: any}>();
-    getAnswerSubject = new Subject<{ source: string, answer: any}>();
+    private getOfferSubject = new Subject<IOfferRef>();
+    private getAnswerSubject = new Subject<IAnswerRef>();
 
     constructor(user: User, signalingAddress?: string) {
         this.socket = new WebSocket( signalingAddress || 'ws://localhost:8080');
@@ -17,7 +28,55 @@ export class Signaler {
         this.socket.addEventListener('message', this.socketMessage.bind(this));
     }
 
-    socketOpened() {
+    public getPeerList(): IUserRef[] {
+        return this.peerlist.value;
+    }
+    public observePeerList(): Observable<IUserRef[]> {
+        return this.peerlist.asObservable();
+    }
+
+    public getOffer() {
+        return new Promise(resolve => {
+            this.getOfferSubject.subscribe(nextValue => {
+                resolve(nextValue);
+            })
+        })
+    }
+    public getAnswer() {
+        return new Promise<{
+            source: string;
+            answer: any;
+        }>(resolve => {
+            this.getAnswerSubject.subscribe(nextValue => {
+                resolve(nextValue);
+            })
+        })
+    }
+    public observeOffers(): Observable<IOfferRef> {
+        return this.getOfferSubject.asObservable();
+    }
+    public sendOffer(targetUserId: string, offer: any) {
+        const payload = JSON.stringify({
+            event: 'sendOffer',
+            data: {
+                target: targetUserId,
+                offer: offer
+            }
+        });
+        this.socket.send(payload);
+    }
+    public sendAnswer(targetUserId: string, answer: any) {
+        const payload = JSON.stringify({
+            event: 'sendAnswer',
+            data: {
+                target: targetUserId,
+                answer: answer
+            }
+        });
+        this.socket.send(payload);
+    }
+    
+    private socketOpened() {
         const payload = JSON.stringify({
             event: 'userConnection',
             data: {
@@ -28,14 +87,7 @@ export class Signaler {
         });
         this.socket.send(payload);
     }
-
-    socket_userAcknowledged(data: { id: string, signature: string }) {
-        if (data && data.signature) {
-            this.user.setSignature(data.signature);
-        }
-    }
-
-    socketMessage(message: { data: string; }) {
+    private socketMessage(message: { data: string; }) {
         let parsedMessage;
         try {
             parsedMessage = JSON.parse(message.data);
@@ -43,61 +95,30 @@ export class Signaler {
             console.log('Error parsing socket message');
         }
         if (!parsedMessage || !parsedMessage.event) return;
-        const handler = this['socket_' + parsedMessage.event as keyof this] as any;
+        const handlerMap = {
+            'getOffer': this.socket_getOffer,
+            'getAnswer': this.socket_getAnswer,
+            'userAcknowledged': this.socket_userAcknowledged,
+            'peerlist': this.socket_peerlist
+        };
+        const messageEvent: keyof typeof handlerMap = parsedMessage.event;
+        const handler = handlerMap[messageEvent] as (data: any) => void;
         if (handler) {
             handler.call(this, parsedMessage.data);
         }
     }
-
-    sendOffer(targetUserId: string, offer: any) {
-        const payload = JSON.stringify({
-            event: 'sendOffer',
-            data: {
-                target: targetUserId,
-                offer: offer
-            }
-        });
-        this.socket.send(payload);
-    }
-
-    getOffer() {
-        return new Promise(resolve => {
-            this.getOfferSubject.subscribe(nextValue => {
-                resolve(nextValue);
-            })
-        })
-    }
-    async socket_getOffer(data: any) {
+    private socket_getOffer(data: any): void {
         this.getOfferSubject.next(data);
     }
-
-    
-    sendAnswer(targetUserId: string, answer: any) {
-        const payload = JSON.stringify({
-            event: 'sendAnswer',
-            data: {
-                target: targetUserId,
-                answer: answer
-            }
-        });
-        this.socket.send(payload);
-    }
-
-    getAnswer() {
-        return new Promise<{
-            source: string;
-            answer: any;
-        }>(resolve => {
-            this.getAnswerSubject.subscribe(nextValue => {
-                resolve(nextValue);
-            })
-        })
-    }
-    async socket_getAnswer(data: any) {
+    private socket_getAnswer(data: any): void {
         this.getAnswerSubject.next(data);
     }
-
-    socket_peerlist(data: {id: string, alias: string}[]) {
+    private socket_userAcknowledged(data: { id: string, signature: string }): void {
+        if (data && data.signature) {
+            this.user.setSignature(data.signature);
+        }
+    }
+    private socket_peerlist(data: {id: string, alias: string}[]): void {
         this.peerlist.next(data.filter(user => this.user.id !== user.id));
     }
 }

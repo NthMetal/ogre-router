@@ -1,4 +1,4 @@
-import { BehaviorSubject, Subject } from "rxjs";
+import { BehaviorSubject, Observable, Subject } from "rxjs";
 import { LocalstorageService } from "../storage/localStorage.storage";
 import { StorageService } from "../storage/storage.service";
 import { Predecessor } from "./predecessor";
@@ -20,17 +20,20 @@ export interface IOgreConfig {
     storageService: StorageService;
 }
 
+export interface IUserRef {
+    id: string;
+    alias: string;
+}
+
 export class Ogre {
 
-    signaler!: Signaler;
-    successor: Successor | undefined;
-    predecessor: Predecessor | undefined;
-    user!: User;
+    private signaler!: Signaler;
+    private user!: User;
 
-    targetUser: { id: string, alias: string } | undefined = undefined;
+    private targetUser: IUserRef | undefined = undefined;
 
-    messages = new Subject<IBaseMessage>();
-    storageService: StorageService;
+    private messages = new Subject<IBaseMessage>();
+    private storageService: StorageService;
 
     private gotUserSubject = new BehaviorSubject<User | undefined>(undefined);
 
@@ -42,7 +45,7 @@ export class Ogre {
             this.user = user;
             this.signaler = new Signaler(this.user, ogreConfig?.signalingAddress);
             this.gotUserSubject.next(user);
-            this.signaler.getOfferSubject.subscribe(async data => {
+            this.signaler.observeOffers().subscribe(async data => {
                 const predecessor = new Predecessor();
                 console.log('socket get offer: ', data);
                 predecessor.peer.signal(data.offer);
@@ -59,20 +62,39 @@ export class Ogre {
         });
     }
 
-    onUserLoaded(): BehaviorSubject<User | undefined> {
-        return this.gotUserSubject;
+    public onUserLoaded(): Observable<User | undefined> {
+        return this.gotUserSubject.asObservable();
     }
 
-    getPeerList() {
-        return this.signaler.peerlist.value;
+    public observePeerList(): Observable<IUserRef[]> {
+        return this.signaler.observePeerList();
     }
 
-    observePeerList() {
-        return this.signaler.peerlist;
+    public observeMessages(): Observable<IBaseMessage> {
+        return this.messages.asObservable();
+    }
+    
+    public selectTargetPeer(user: IUserRef): void {
+        this.targetUser = user;
     }
 
-    createCircuit(targetUser: { id: string, alias: string } | undefined, maxORs = 1): string[] {
-        const peerlist = this.getPeerList();
+    public async sendMessage(message: string): Promise<void> {
+        console.log(`target ${this.targetUser} sending ${message}`);
+        const circuit = this.createCircuit(this.targetUser, 2);
+        const baseMessage: IBaseMessage = {
+            bare: true,
+            message,
+            source: this.user.id,
+            sourceAlias: this.user.alias,
+            target: this.targetUser?.id || '',
+            date: new Date()
+        };
+        const layeredMessage = this.layerMessage(circuit, JSON.stringify(baseMessage));
+        await this.transferMessage(layeredMessage);
+    }
+
+    private createCircuit(targetUser: IUserRef | undefined, maxORs = 1): string[] {
+        const peerlist = this.signaler.getPeerList();
         const circuit: string[] = [];
         if (!targetUser) return circuit;
 
@@ -89,11 +111,7 @@ export class Ogre {
         return circuit;
     }
 
-    selectTargetPeer(user: { id: string, alias: string }) {
-        this.targetUser = user;
-    }
-
-    layerMessage(circuit: string[], message: string) {
+    private layerMessage(circuit: string[], message: string): string {
         // circuit
         let ogreMessage = message;
         circuit.reverse().forEach(userId => {
@@ -105,22 +123,7 @@ export class Ogre {
         return ogreMessage;
     }
 
-    async sendMessage(message: string) {
-        console.log(`target ${this.targetUser} sending ${message}`);
-        const circuit = this.createCircuit(this.targetUser, 2);
-        const baseMessage: IBaseMessage = {
-            bare: true,
-            message,
-            source: this.user.id,
-            sourceAlias: this.user.alias,
-            target: this.targetUser?.id || '',
-            date: new Date()
-        };
-        const layeredMessage = this.layerMessage(circuit, JSON.stringify(baseMessage));
-        await this.transferMessage(layeredMessage);
-    }
-
-    async transferMessage(layeredMessage: string) {
+    private async transferMessage(layeredMessage: string): Promise<void> {
         let parsedLayeredMessage;
         try {
             parsedLayeredMessage = JSON.parse(layeredMessage);
