@@ -1,9 +1,8 @@
 import { BehaviorSubject, Observable, Subject } from "rxjs";
 import { LocalstorageService } from "../storage/localStorage.storage";
 import { StorageService } from "../storage/storage.service";
-import { Predecessor } from "./predecessor";
 import { Signaler } from "./signaler";
-import { Successor } from "./successor";
+import { Router } from "./router";
 import { User } from "./user";
 
 export interface IBaseMessage {
@@ -46,12 +45,12 @@ export class Ogre {
             this.signaler = new Signaler(this.user, ogreConfig?.signalingAddress);
             this.gotUserSubject.next(user);
             this.signaler.observeOffers().subscribe(async data => {
-                const predecessor = new Predecessor();
+                const predecessor = new Router(false);
                 console.log('socket get offer: ', data);
-                predecessor.peer.signal(data.offer);
+                predecessor.signal(data.offer);
                 const answer = await predecessor.getAnswer();
                 this.signaler.sendAnswer(data.source, answer);
-                predecessor.data.subscribe(message => {
+                predecessor.onData().subscribe(message => {
                     console.log('got message: ', message);
                     this.transferMessage(message);
                     // setTimeout(() => {predecessor.destroy();});
@@ -141,13 +140,13 @@ export class Ogre {
 
         console.log('targeted user: ', targetUserId);
 
-        const successor = new Successor();
+        const successor = new Router(true);
         const offer = await successor.getOffer();
         this.signaler.sendOffer(targetUserId, offer);
         const answerData = await this.signaler.getAnswer();
-        successor.peer.signal(answerData.answer)
+        successor.signal(answerData.answer)
         await successor.onConnection();
-        successor.peer.send(nextMessage);
+        successor.sendMessage(nextMessage);
         // TODO NTH: fix destroying only after message is successfully sent
         setTimeout(() => { successor.destroy(); }, 100);
     }
