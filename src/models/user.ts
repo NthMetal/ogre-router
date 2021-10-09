@@ -4,11 +4,19 @@ export class User {
 
     id = '';
     alias = '';
+    aliasNumber = '0000';
     signature = '';
 
-    constructor() {
-        this.id = uuid();
-        this.alias = `Anon#${this.getPaddedNumber()}`;
+    constructor(
+        id?: string,
+        alias?: string,
+        aliasNumber?: string,
+        signature?: string
+    ) {
+        this.id = id || uuid();
+        this.aliasNumber = aliasNumber || alias?.split('#')[1] || this.getPaddedNumber();
+        this.alias = alias || `Anon#${this.aliasNumber}`;
+        this.signature = signature || '';
     }
 
     private getPaddedNumber(): string {
@@ -16,7 +24,7 @@ export class User {
     }
 
     setAlias(newAlias: string) {
-        this.alias = `${newAlias}#${this.getPaddedNumber()}`;
+        this.alias = `${newAlias}#${this.aliasNumber}`;
     }
 
     setSignature(newSignature: string) {

@@ -15,17 +15,26 @@ interface IAnswerRef {
 export class Signaler {
 
     private socket;
-    private user;
     private peerlist = new BehaviorSubject<IUserRef[]>([]);
 
+    private getConnectedSubject = new Subject<boolean>();
     private getOfferSubject = new Subject<IOfferRef>();
     private getAnswerSubject = new Subject<IAnswerRef>();
+    private getSignatureSubject = new Subject<string>();
 
-    constructor(user: User, signalingAddress?: string) {
+    constructor(signalingAddress?: string) {
         this.socket = new WebSocket( signalingAddress || 'ws://localhost:8080');
-        this.user = user;
-        this.socket.addEventListener('open', this.socketOpened.bind(this));
+        this.socket.addEventListener('open', () => {
+            this.getConnectedSubject.next(true);
+        });
         this.socket.addEventListener('message', this.socketMessage.bind(this));
+    }
+    onSocketConnected(): Promise<boolean> {
+        return new Promise<boolean>(resolve => {
+            this.getConnectedSubject.subscribe(connected => {
+                resolve(connected);
+            });
+        });
     }
 
     public getPeerList(): IUserRef[] {
@@ -75,18 +84,37 @@ export class Signaler {
         });
         this.socket.send(payload);
     }
-    
-    private socketOpened() {
+
+    public connectUser(user: User): void {
         const payload = JSON.stringify({
             event: 'userConnection',
             data: {
-                id: this.user.id,
-                alias: this.user.alias,
-                signature: this.user.signature
+                id: user.id,
+                alias: user.alias,
+                signature: user.signature
             }
         });
         this.socket.send(payload);
     }
+    public getSignature(user: User, updates?: { alias: string }): Promise<string> {
+        return new Promise<string> (resolve => {
+            const payload = JSON.stringify({
+                event: 'userSignature',
+                data: {
+                    id: user.id,
+                    alias: user.alias,
+                    signature: user.signature,
+                    updates
+                }
+            });
+            this.socket.send(payload);
+            this.getSignatureSubject.subscribe(signature => {
+                resolve(signature);
+            });
+        });
+
+    }
+    
     private socketMessage(message: { data: string; }) {
         let parsedMessage;
         try {
@@ -98,7 +126,7 @@ export class Signaler {
         const handlerMap = {
             'getOffer': this.socket_getOffer,
             'getAnswer': this.socket_getAnswer,
-            'userAcknowledged': this.socket_userAcknowledged,
+            'userSignature': this.socket_userSignature,
             'peerlist': this.socket_peerlist
         };
         const messageEvent: keyof typeof handlerMap = parsedMessage.event;
@@ -113,12 +141,12 @@ export class Signaler {
     private socket_getAnswer(data: any): void {
         this.getAnswerSubject.next(data);
     }
-    private socket_userAcknowledged(data: { id: string, signature: string }): void {
+    private socket_userSignature(data: { id: string, signature: string }): void {
         if (data && data.signature) {
-            this.user.setSignature(data.signature);
+            this.getSignatureSubject.next(data.signature);
         }
     }
     private socket_peerlist(data: {id: string, alias: string}[]): void {
-        this.peerlist.next(data.filter(user => this.user.id !== user.id));
+        this.peerlist.next(data);
     }
 }

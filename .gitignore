@@ -3,6 +3,7 @@
 /lib/
 /dist/
 /dist-cli/
+/dist-browser/
 /docs/
 .idea/*
 

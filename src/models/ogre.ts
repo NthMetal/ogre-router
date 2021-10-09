@@ -40,10 +40,19 @@ export class Ogre {
         this.storageService = ogreConfig && ogreConfig.storageService ?
             ogreConfig.storageService :
             new LocalstorageService();
-        this.storageService.getUser().then(user => {
-            this.user = user;
-            this.signaler = new Signaler(this.user, ogreConfig?.signalingAddress);
-            this.gotUserSubject.next(user);
+        this.storageService.getUser().then(async user => {
+            this.signaler = new Signaler(ogreConfig?.signalingAddress);
+            await this.signaler.onSocketConnected();
+            if (user) {
+                this.user = user;
+            } else {
+                this.user = new User();
+                const signature = await this.signaler.getSignature(this.user);
+                this.user.setSignature(signature);
+                this.storageService.setUser(this.user);
+            }
+            this.signaler.connectUser(this.user);
+            this.gotUserSubject.next(this.user);
             this.signaler.observeOffers().subscribe(async data => {
                 const predecessor = new Router(false);
                 console.log('socket get offer: ', data);
@@ -71,6 +80,15 @@ export class Ogre {
 
     public observeMessages(): Observable<IBaseMessage> {
         return this.messages.asObservable();
+    }
+
+    public async updateAlias(updatedName: string): Promise<User> {
+        const updatedAlias = `${updatedName}#${this.user.aliasNumber}`;
+        const signature = await this.signaler.getSignature(this.user, { alias: updatedAlias });
+        this.user.setAlias(updatedName);
+        this.user.setSignature(signature);
+        this.storageService.setUser(this.user);
+        return this.user;
     }
     
     public selectTargetPeer(user: IUserRef): void {
