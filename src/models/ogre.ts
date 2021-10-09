@@ -15,8 +15,8 @@ export interface IBaseMessage {
 }
 
 export interface IOgreConfig {
-    signalingAddress: string;
-    storageService: StorageService;
+    signalingAddress?: string;
+    storageService?: StorageService;
 }
 
 export interface IUserRef {
