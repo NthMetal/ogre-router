@@ -2,12 +2,12 @@ import { BehaviorSubject, Observable, Subject } from "rxjs";
 import { IUserRef } from "./ogre";
 import { User } from "./user";
 
-interface IOfferRef { 
+export interface IOfferRef { 
     source: string;
     offer: any;
 }
 
-interface IAnswerRef {
+export interface IAnswerRef {
     source: string;
     answer: any;
 }
