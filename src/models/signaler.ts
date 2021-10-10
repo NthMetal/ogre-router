@@ -23,13 +23,14 @@ export class Signaler {
     private getSignatureSubject = new Subject<string>();
 
     constructor(signalingAddress?: string) {
-        this.socket = new WebSocket( signalingAddress || 'ws://localhost:8080');
+        this.socket = new WebSocket( signalingAddress || 'ws://localhost:3000');
         this.socket.addEventListener('open', () => {
             this.getConnectedSubject.next(true);
         });
         this.socket.addEventListener('message', this.socketMessage.bind(this));
     }
-    onSocketConnected(): Promise<boolean> {
+
+    public onSocketConnected(): Promise<boolean> {
         return new Promise<boolean>(resolve => {
             this.getConnectedSubject.subscribe(connected => {
                 resolve(connected);
@@ -44,18 +45,15 @@ export class Signaler {
         return this.peerlist.asObservable();
     }
 
-    public getOffer() {
-        return new Promise(resolve => {
+    public getOffer(): Promise<IOfferRef> {
+        return new Promise<IOfferRef>(resolve => {
             this.getOfferSubject.subscribe(nextValue => {
                 resolve(nextValue);
             })
         })
     }
-    public getAnswer() {
-        return new Promise<{
-            source: string;
-            answer: any;
-        }>(resolve => {
+    public getAnswer(): Promise<IAnswerRef> {
+        return new Promise<IAnswerRef>(resolve => {
             this.getAnswerSubject.subscribe(nextValue => {
                 resolve(nextValue);
             })

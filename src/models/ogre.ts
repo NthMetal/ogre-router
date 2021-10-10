@@ -54,18 +54,17 @@ export class Ogre {
             this.signaler.connectUser(this.user);
             this.gotUserSubject.next(this.user);
             this.signaler.observeOffers().subscribe(async data => {
+                console.log('DEBUG', 'got offer', data);
                 const predecessor = new Router(false);
-                console.log('socket get offer: ', data);
                 predecessor.signal(data.offer);
                 const answer = await predecessor.getAnswer();
                 this.signaler.sendAnswer(data.source, answer);
                 predecessor.onData().subscribe(message => {
-                    console.log('got message: ', message);
+                    console.log('DEBUG', 'transfering message', message);
                     this.transferMessage(message);
                     // setTimeout(() => {predecessor.destroy();});
                 });
                 await predecessor.onConnection();
-                console.log('predecessor connected: ', data);
             });
         });
     }
@@ -96,7 +95,6 @@ export class Ogre {
     }
 
     public async sendMessage(message: string): Promise<void> {
-        console.log(`target ${this.targetUser} sending ${message}`);
         const circuit = this.createCircuit(this.targetUser, 2);
         const baseMessage: IBaseMessage = {
             bare: true,
@@ -140,31 +138,36 @@ export class Ogre {
         return ogreMessage;
     }
 
-    private async transferMessage(layeredMessage: string): Promise<void> {
+    private peelMessage(layeredMessage: string): { next: string, message: string } | undefined {
         let parsedLayeredMessage;
         try {
             parsedLayeredMessage = JSON.parse(layeredMessage);
         } catch (error) {
-            console.log('error parsing assuming this is final message: ', layeredMessage);
-            return;
+            console.log('DEBUG', 'error parsing assuming this is final message: ', layeredMessage);
+            return undefined;
         }
         if (parsedLayeredMessage && parsedLayeredMessage.bare) {
+            console.log('DEBUG', 'peel, reached end of message', parsedLayeredMessage);
             this.messages.next(parsedLayeredMessage);
-            return;
+            return undefined;
         }
-        console.log(layeredMessage, parsedLayeredMessage);
-        const nextMessage = parsedLayeredMessage.message;
-        const targetUserId = parsedLayeredMessage.next;
+        console.log('DEBUG', 'peel successful', parsedLayeredMessage);
+        return parsedLayeredMessage;
+    }
 
-        console.log('targeted user: ', targetUserId);
+    private async transferMessage(layeredMessage: string): Promise<void> {
+        console.log('DEBUG', 'transfering message', layeredMessage);
+        const peeledMessage = this.peelMessage(layeredMessage);
+        if (!peeledMessage) return;
 
         const successor = new Router(true);
         const offer = await successor.getOffer();
-        this.signaler.sendOffer(targetUserId, offer);
+        this.signaler.sendOffer(peeledMessage.next, offer);
         const answerData = await this.signaler.getAnswer();
         successor.signal(answerData.answer)
         await successor.onConnection();
-        successor.sendMessage(nextMessage);
+        console.log('DEBUG', 'connected to next peer, sending message', peeledMessage.message);
+        successor.sendMessage(peeledMessage.message);
         // TODO NTH: fix destroying only after message is successfully sent
         setTimeout(() => { successor.destroy(); }, 100);
     }
