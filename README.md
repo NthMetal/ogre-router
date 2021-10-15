@@ -2,6 +2,8 @@
 
 **CURRENTLY IN DEVELOPMENT**
 
+**CURRENTLY REQUIRES THE USE OF [Ogre-Router-Server](https://github.com/NthMetal/ogre-router-server)**
+
 [![Lint and test](https://github.com/NthMetal/ogre-router/actions/workflows/lint-and-test.yml/badge.svg)](https://github.com/NthMetal/ogre-router/actions/workflows/lint-and-test.yml)
 
 [![Deploy to Github pages](https://github.com/NthMetal/ogre-router/actions/workflows/deploy-gh-pages.yml/badge.svg)](https://github.com/NthMetal/ogre-router/actions/workflows/deploy-gh-pages.yml)
@@ -53,6 +55,20 @@ This is the basic idea behind this project.
 ## Usage
 
 Coming Soon
+
+## TODO
+
+### Featrues
+- [ ] Issue Public and Private Keys from ogre-router-server and store them using a storage server.
+- [ ] Send public keys with peerlist.
+- [ ] Add configurable fields to user object. (ex. Image)
+- [ ] Wrap messages with the public key encryption.
+- [ ] Unwrap a message using private key
+- [ ] Send message recieved confirmation
+- [ ] Add support for groups
+
+### Known Issues
+- [ ] WebRTC sending double messages sometimes.
 
 ## Security
 
