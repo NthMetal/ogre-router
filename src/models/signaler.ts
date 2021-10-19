@@ -20,7 +20,7 @@ export class Signaler {
     private getConnectedSubject = new Subject<boolean>();
     private getOfferSubject = new Subject<IOfferRef>();
     private getAnswerSubject = new Subject<IAnswerRef>();
-    private getSignatureSubject = new Subject<string>();
+    private getUserConnSubject = new Subject<string>();
 
     constructor(signalingAddress?: string) {
         this.socket = new WebSocket( signalingAddress || 'ws://localhost:3000');
@@ -83,34 +83,19 @@ export class Signaler {
         this.socket.send(payload);
     }
 
-    public connectUser(user: User): void {
-        const payload = JSON.stringify({
-            event: 'userConnection',
-            data: {
-                id: user.id,
-                alias: user.alias,
-                signature: user.signature
-            }
-        });
-        this.socket.send(payload);
-    }
-    public getSignature(user: User, updates?: { alias: string }): Promise<string> {
+    public connectUser(user: User): Promise<string> {
         return new Promise<string> (resolve => {
             const payload = JSON.stringify({
-                event: 'userSignature',
+                event: 'userConnection',
                 data: {
-                    id: user.id,
-                    alias: user.alias,
-                    signature: user.signature,
-                    updates
+                    alias: user.alias
                 }
             });
             this.socket.send(payload);
-            this.getSignatureSubject.subscribe(signature => {
-                resolve(signature);
+            this.getUserConnSubject.subscribe(id => {
+                resolve(id);
             });
         });
-
     }
     
     private socketMessage(message: { data: string; }) {
@@ -122,9 +107,9 @@ export class Signaler {
         }
         if (!parsedMessage || !parsedMessage.event) return;
         const handlerMap = {
+            'userConnected': this.socket_userConnected,
             'getOffer': this.socket_getOffer,
             'getAnswer': this.socket_getAnswer,
-            'userSignature': this.socket_userSignature,
             'peerlist': this.socket_peerlist
         };
         const messageEvent: keyof typeof handlerMap = parsedMessage.event;
@@ -133,16 +118,15 @@ export class Signaler {
             handler.call(this, parsedMessage.data);
         }
     }
+
+    private socket_userConnected(data: { id: string }): void {
+        this.getUserConnSubject.next(data.id);
+    }
     private socket_getOffer(data: any): void {
         this.getOfferSubject.next(data);
     }
     private socket_getAnswer(data: any): void {
         this.getAnswerSubject.next(data);
-    }
-    private socket_userSignature(data: { id: string, signature: string }): void {
-        if (data && data.signature) {
-            this.getSignatureSubject.next(data.signature);
-        }
     }
     private socket_peerlist(data: {id: string, alias: string}[]): void {
         this.peerlist.next(data);

@@ -32,8 +32,7 @@ export class LocalstorageService extends StorageService {
             user = new User(
                 baseUser.id,
                 baseUser.alias,
-                baseUser.aliasNumber,
-                baseUser.signature
+                baseUser.aliasNumber
             );
         } catch (error) { return undefined }
         return user;

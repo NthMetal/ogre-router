@@ -59,7 +59,7 @@ Coming Soon
 ## TODO
 
 ### Featrues
-- [ ] Issue Public and Private Keys from ogre-router-server and store them using a storage server.
+- [ ] Generate public and private key as part of user identity and send public key to server.
 - [ ] Send public keys with peerlist.
 - [ ] Add configurable fields to user object. (ex. Image)
 - [ ] Wrap messages with the public key encryption.

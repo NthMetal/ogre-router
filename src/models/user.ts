@@ -1,22 +1,18 @@
-import { v4 as uuid } from 'uuid';
 
 export class User {
 
     id = '';
     alias = '';
     aliasNumber = '0000';
-    signature = '';
 
     constructor(
         id?: string,
         alias?: string,
-        aliasNumber?: string,
-        signature?: string
+        aliasNumber?: string
     ) {
-        this.id = id || uuid();
+        this.id = id ? id : '';
         this.aliasNumber = aliasNumber || alias?.split('#')[1] || this.getPaddedNumber();
         this.alias = alias || `Anon#${this.aliasNumber}`;
-        this.signature = signature || '';
     }
 
     private getPaddedNumber(): string {
@@ -27,7 +23,8 @@ export class User {
         this.alias = `${newAlias}#${this.aliasNumber}`;
     }
 
-    setSignature(newSignature: string) {
-        this.signature = newSignature;
+    setId(id: string) {
+        this.id = id;
     }
+
 }
