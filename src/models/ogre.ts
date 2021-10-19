@@ -57,6 +57,7 @@ export class Ogre {
             const id = await this.signaler.connectUser(this.user);
             this.user.setId(id);
             this.gotUserSubject.next(this.user);
+            this.storageService.setUser(this.user);
             this.signaler.observeOffers().subscribe(async data => {
                 console.log('DEBUG', 'got offer', data);
                 const predecessor = new Router(false);
