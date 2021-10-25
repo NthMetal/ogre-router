@@ -72,6 +72,19 @@ export class Ogre {
                 await predecessor.onConnection();
             });
         });
+
+        if (window && window.Worker) {
+            const worker = new Worker('./ogre-worker.js');
+            worker.postMessage({
+                question:
+                    'The Answer to the Ultimate Question of Life, The Universe, and Everything.',
+            });
+            worker.onmessage = ({ data: { answer } }) => {
+                console.log(answer);
+            };
+        } else {
+            console.log('Unable to register worker');
+        }
     }
 
     /**
@@ -117,7 +130,7 @@ export class Ogre {
         this.storageService.setUser(this.user);
         return this.user;
     }
-    
+
     /**
      * Updates the current target user.
      * The currently target user is the user messages will be sent to.

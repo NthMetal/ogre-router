@@ -24,6 +24,7 @@
       "jest"
     ],
     "lib": [
+      "WebWorker",
       "ES6",
       "DOM"
     ]

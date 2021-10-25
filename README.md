@@ -60,6 +60,7 @@ Coming Soon
 
 ### Featrues
 - [ ] Generate public and private key as part of user identity and send public key to server.
+  - [ ] Use a web worker & web crypto api to create & store the private key (should be compatible with angular)
 - [ ] Send public keys with peerlist.
 - [ ] Add configurable fields to user object. (ex. Image)
 - [ ] Wrap messages with the public key encryption.
