@@ -74,7 +74,7 @@ export class Ogre {
         });
 
         if (window && window.Worker) {
-            const worker = new Worker('./ogre-worker.js');
+            const worker = new Worker(new URL('./ogre-worker.js', import.meta.url));
             worker.postMessage({
                 question:
                     'The Answer to the Ultimate Question of Life, The Universe, and Everything.',
