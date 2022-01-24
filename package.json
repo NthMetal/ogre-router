@@ -40,7 +40,7 @@
     "esbuild-node:watch": "esbuild src/cli.ts --bundle --watch --sourcemap=external --outfile=dist-cli/cli.js"
   },
   "devDependencies": {
-    "@types/history": "^4.7.9",
+    "@types/history": "^5.0.0",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.10.3",
     "@types/simple-peer": "^9.11.3",
