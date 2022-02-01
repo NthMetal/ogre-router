@@ -54,7 +54,17 @@ This is the basic idea behind this project.
 
 ## Usage
 
-Coming Soon
+Most communication methods involve a server that handles incoming and outgoing messages. 
+
+Typically the people who run the server promise not to read your messages. But they always can, and sometimes allow other users to flag you so they can read your messages.
+
+This can be avoided by connecting directly from peer to peer, however this means exposing yourself to the person you're communicating with.
+
+In order to avoid both of these the communication is routed similarly to the onion network.
+
+## Caveats
+
+By joining the network, you become a relay node. This means messages from other people will go through your browser, though you cannot read them.
 
 ## TODO
 
